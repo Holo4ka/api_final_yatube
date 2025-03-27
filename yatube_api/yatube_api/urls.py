@@ -14,4 +14,3 @@ urlpatterns = [
     # JWT-эндпоинты, для управления JWT-токенами:
     path('api/v1/', include('djoser.urls.jwt')),
 ]
-

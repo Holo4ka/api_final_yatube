@@ -1,7 +1,8 @@
 from rest_framework import viewsets, permissions, filters, status
 from rest_framework.response import Response
 from posts.models import Post, Comment, Follow, Group, User
-from .serializers import PostSerializer, CommentSerializer, GroupSerializer, FollowSerializer
+from .serializers import PostSerializer, CommentSerializer
+from .serializers import GroupSerializer, FollowSerializer
 from .pagination import CustomLimitOffsetPagination
 from .permissions import AuthorOrReadOnly, ReadOnly
 from rest_framework.exceptions import NotFound, PermissionDenied
@@ -17,13 +18,13 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-    
+
     def get_permissions(self):
         # Если в GET-запросе требуется получить информацию об объекте
         if self.action == 'retrieve':
             # Вернём обновлённый перечень используемых пермишенов
             return (ReadOnly(),)
-        # Для остальных ситуаций оставим текущий перечень пермишенов без изменений
+        # Для остальных ситуаций оставим текущий перечень без изменений
         return super().get_permissions()
 
 
@@ -47,7 +48,6 @@ class GroupViewSet(viewsets.ViewSet):
 
     def destroy(self, request, pk=None):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
 
 
 class CommentViewSet(viewsets.ViewSet):
@@ -121,6 +121,7 @@ class CommentViewSet(viewsets.ViewSet):
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 '''class FollowViewSet(viewsets.ModelViewSet):
     serializer_class = FollowSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -129,7 +130,7 @@ class CommentViewSet(viewsets.ViewSet):
 
     def get_queryset(self):
         return Follow.objects.filter(user=self.request.user)
-    
+
     def perform_create(self, serializer):
         to_follow = self.request.data['following']
         try:
@@ -151,6 +152,7 @@ class CommentViewSet(viewsets.ViewSet):
             print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST)'''
 
+
 class FollowViewSet(viewsets.ViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     filter_backends = (filters.SearchFilter,)
@@ -158,7 +160,7 @@ class FollowViewSet(viewsets.ViewSet):
 
     def get_queryset(self):
         return Follow.objects.filter(user=self.request.user)
-    
+
     def create(self, request):
         to_follow = self.request.data.get('following')
         try:
@@ -167,12 +169,13 @@ class FollowViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         if self.request.user == user_to_follow:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        serializer = FollowSerializer(data=request.data, context={'request': request})
+        serializer = FollowSerializer(data=request.data,
+                                      context={'request': request})
         if serializer.is_valid() and request.user.is_authenticated:
             serializer.save(user=self.request.user, following=user_to_follow)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def list(self, request):
         queryset = self.get_queryset()
         search_terms = request.query_params.get('search', None)

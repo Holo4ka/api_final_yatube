@@ -44,6 +44,6 @@ class FollowSerializer(serializers.ModelSerializer):
         try:
             instance = Follow.objects.create(**validated_data)
             return instance
-        except Exception as e:  # Обработка исключения, если запись с таким полем уже существует
+        except Exception as e:
             print(f'Serializer: {e}')
             raise serializers.ValidationError()

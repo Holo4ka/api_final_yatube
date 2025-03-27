@@ -1,5 +1,6 @@
 from rest_framework.pagination import LimitOffsetPagination
 
+
 class CustomLimitOffsetPagination(LimitOffsetPagination):
     def paginate_queryset(self, queryset, request, view=None):
         # Получаем параметры limit и offset из запроса
