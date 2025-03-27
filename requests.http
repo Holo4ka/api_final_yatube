@@ -1,0 +1,46 @@
+POST http://127.0.0.1:8000/api/v1/users/
+Content-Type: application/json
+
+{
+    "username": "myuser1",
+    "password": "my_password_1"
+}
+
+###
+
+POST http://127.0.0.1:8000/api/v1/jwt/create/
+Content-Type: application/json
+
+{
+    "username": "myuser1",
+    "password": "my_password_1"
+}
+
+###
+POST http://127.0.0.1:8000/api/v1/follow/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzMTcyODQwLCJpYXQiOjE3NDMwODY0NDAsImp0aSI6IjQzYWJlOGQ2NzFhMTQxZmQ5MTc0Njc5YTUwZGM4YzNlIiwidXNlcl9pZCI6NH0.iXuSzYOc_BL4qFMfV6A4TLvvNVbvmYzlbBDzRUgHRg8
+
+{
+    "following": "root"
+}
+
+
+### 
+GET http://127.0.0.1:8000/api/v1/follow/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzMTcyODQwLCJpYXQiOjE3NDMwODY0NDAsImp0aSI6IjQzYWJlOGQ2NzFhMTQxZmQ5MTc0Njc5YTUwZGM4YzNlIiwidXNlcl9pZCI6NH0.iXuSzYOc_BL4qFMfV6A4TLvvNVbvmYzlbBDzRUgHRg8
+
+{
+    "user": "myuser1"
+}
+
+###
+
+POST http://127.0.0.1:8000/api/v1/follow/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQzMTcyODQwLCJpYXQiOjE3NDMwODY0NDAsImp0aSI6IjQzYWJlOGQ2NzFhMTQxZmQ5MTc0Njc5YTUwZGM4YzNlIiwidXNlcl9pZCI6NH0.iXuSzYOc_BL4qFMfV6A4TLvvNVbvmYzlbBDzRUgHRg8
+
+{
+    "following": "regular_user"
+}
