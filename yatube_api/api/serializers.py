@@ -47,3 +47,10 @@ class FollowSerializer(serializers.ModelSerializer):
         except Exception as e:
             print(f'Serializer: {e}')
             raise serializers.ValidationError()
+    
+    def validate(self, data):
+        """Проверяем, что не подписываемся на самого себя"""
+        if self.context['request'].user != data.get('following'):
+            return data
+        raise serializers.ValidationError("Нельзя подписаться на самого себя")
+

@@ -167,8 +167,7 @@ class FollowViewSet(viewsets.ViewSet):
             user_to_follow = User.objects.get(username=to_follow)
         except User.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        if self.request.user == user_to_follow:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
         serializer = FollowSerializer(data=request.data,
                                       context={'request': request})
         if serializer.is_valid() and request.user.is_authenticated:
@@ -185,3 +184,11 @@ class FollowViewSet(viewsets.ViewSet):
                 Q(following__username__icontains=search_terms))
         serializer = FollowSerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+
+
+
+
+if self.request.user == user_to_follow:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
